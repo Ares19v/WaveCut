@@ -1,5 +1,4 @@
 <h1 align="center">
-  <img src="public/logo.png" alt="WaveCut" width="48" style="vertical-align:middle"/>
   WaveCut
 </h1>
 
