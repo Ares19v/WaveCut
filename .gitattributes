@@ -1,0 +1,20 @@
+# Normalize line endings
+* text=auto
+
+# Force LF for shell / CI files
+*.sh text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+nginx.conf text eol=lf
+Dockerfile text eol=lf
+
+# Windows batch files stay CRLF
+*.bat text eol=crlf
+
+# Binary files — no conversion
+*.png binary
+*.jpg binary
+*.webp binary
+*.ico binary
+*.woff2 binary
+*.woff binary

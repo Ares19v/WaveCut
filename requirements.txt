@@ -1,0 +1,7 @@
+# WaveCut is a pure frontend application (Vite + Vanilla JS).
+# There are no Python dependencies.
+#
+# Node.js dependencies are managed via npm — see package.json.
+# To install: npm install
+# To run dev: npm run dev
+# To build:   npm run build
