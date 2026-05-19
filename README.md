@@ -119,3 +119,8 @@ WaveCut/
 ## 📄 License
 
 [MIT](LICENSE) © 2025 Devansh Tyagi
+
+---
+<p align="center">
+  Made by Devansh Tyagi @ 2026
+</p>
