@@ -90,8 +90,7 @@ html, body {
   align-items: center;
   justify-content: center;
   z-index: 10;
-  background: radial-gradient(circle at 50% 40%, rgba(13, 16, 26, 0.4) 0%, rgba(1, 2, 4, 0.95) 75%);
-  backdrop-filter: blur(8px);
+  background: transparent;
   padding: 24px;
 }
 
