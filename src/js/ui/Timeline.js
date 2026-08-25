@@ -1,4 +1,4 @@
-export class Timeline {
+﻿export class Timeline {
   constructor(editor) {
     this.editor = editor;
     this._ruler = document.getElementById('tl-ruler');
@@ -7,115 +7,175 @@ export class Timeline {
     this._playhead = document.getElementById('tl-playhead');
     this._zoom = 1;
     this._basePPS = 80;
-    this._tracks = ['video-1', 'overlay-1', 'audio-1'];
+    this._tracks = [
+      { id: 'video-1', name: 'VIDEO TRACK 1', cls: 'video-track' },
+      { id: 'overlay-1', name: 'OVERLAY / TEXT', cls: 'overlay-track' },
+      { id: 'audio-1', name: 'AUDIO TRACK', cls: 'audio-track' }
+    ];
     this._init();
   }
 
-  get pps() { return this._basePPS * this._zoom; }
+  get pps() {
+    return this._basePPS * this._zoom;
+  }
 
   _init() {
-    this._tracks.forEach(id => {
+    this._labelsArea.innerHTML = '';
+    this._tracksArea.querySelectorAll('.track-row').forEach(r => r.remove());
+
+    this._tracks.forEach(track => {
       const lbl = document.createElement('div');
-      lbl.className = 'track-label-row';
-      lbl.textContent = id.replace('-', ' ').toUpperCase();
+      lbl.className = `track-label-row ${track.cls}`;
+      lbl.textContent = track.name;
       this._labelsArea.appendChild(lbl);
 
       const row = document.createElement('div');
       row.className = 'track-row';
-      row.dataset.trackId = id;
+      row.dataset.trackId = track.id;
       this._tracksArea.appendChild(row);
     });
+
     this._bindScrub();
+    this._bindZoom();
   }
 
   _bindScrub() {
+    let isScrubbing = false;
+
+    const doScrub = (e) => {
+      const rect = this._tracksArea.getBoundingClientRect();
+      const x = e.clientX - rect.left + this._tracksArea.scrollLeft;
+      const t = Math.max(0, x / this.pps);
+      this.editor.timeline.seek(t);
+    };
+
     this._tracksArea.addEventListener('mousedown', e => {
-      this._scrubbing = true;
-      this._scrub(e);
+      if (e.target.closest('.track-clip')) return;
+      isScrubbing = true;
+      doScrub(e);
     });
-    window.addEventListener('mousemove', e => { if (this._scrubbing) this._scrub(e); });
-    window.addEventListener('mouseup', () => this._scrubbing = false);
+
+    this._ruler.addEventListener('mousedown', e => {
+      isScrubbing = true;
+      doScrub(e);
+    });
+
+    window.addEventListener('mousemove', e => {
+      if (isScrubbing) doScrub(e);
+    });
+
+    window.addEventListener('mouseup', () => {
+      isScrubbing = false;
+    });
   }
 
-  _scrub(e) {
-    const rect = this._tracksArea.getBoundingClientRect();
-    const x = e.clientX - rect.left + this._tracksArea.scrollLeft;
-    this.editor.timeline.seek(x / this.pps);
+  _bindZoom() {
+    document.getElementById('tl-zoom-in')?.addEventListener('click', () => {
+      this._zoom = Math.min(3, this._zoom + 0.25);
+      this.redraw();
+    });
+
+    document.getElementById('tl-zoom-out')?.addEventListener('click', () => {
+      this._zoom = Math.max(0.4, this._zoom - 0.25);
+      this.redraw();
+    });
   }
 
   setPlayheadPosition(t) {
-    this._playhead.style.left = `${t * this.pps}px`;
-    // Auto-scroll timeline
+    if (!this._playhead) return;
+    const px = t * this.pps;
+    this._playhead.style.left = `${px}px`;
+
+    // Auto scroll timeline during playback
     const rect = this._tracksArea.getBoundingClientRect();
-    const x = t * this.pps;
-    if (x > this._tracksArea.scrollLeft + rect.width - 100) {
-      this._tracksArea.scrollLeft = x - rect.width + 100;
-    } else if (x < this._tracksArea.scrollLeft) {
-      this._tracksArea.scrollLeft = x;
+    if (px > this._tracksArea.scrollLeft + rect.width - 80) {
+      this._tracksArea.scrollLeft = px - rect.width + 80;
+    } else if (px < this._tracksArea.scrollLeft) {
+      this._tracksArea.scrollLeft = px;
     }
   }
 
   placeClip(layer) {
-    const trackId = layer.assetType === 'video' ? 'video-1' : 'overlay-1';
+    let trackId = 'overlay-1';
+    if (layer.assetType === 'video') trackId = 'video-1';
+    else if (layer.assetType === 'audio') trackId = 'audio-1';
+
     const track = this._tracksArea.querySelector(`[data-track-id="${trackId}"]`);
-    
-    const clip = document.createElement('div');
-    clip.className = 'track-clip';
-    clip.dataset.layerId = layer.id;
-    clip.innerHTML = `
-      <div class="clip-thumb-strip"></div>
-      <span class="clip-label">${layer.name}</span>
-    `;
-    
-    clip.addEventListener('click', e => {
-      e.stopPropagation();
-      this.editor.selectLayer(layer.id);
-    });
-    
-    track.appendChild(clip);
-    this._updateClipThumbnails(clip, layer);
+    if (!track) return;
+
+    let clip = this._tracksArea.querySelector(`[data-layer-id="${layer.id}"]`);
+    if (!clip) {
+      clip = document.createElement('div');
+      clip.className = `track-clip ${layer.assetType === 'text' ? 'overlay-clip' : (layer.assetType === 'audio' ? 'audio-clip' : '')}`;
+      clip.dataset.layerId = layer.id;
+      clip.innerHTML = `
+        <div class="clip-thumb-strip"></div>
+        <span class="clip-label">${layer.name}</span>
+      `;
+      clip.addEventListener('click', e => {
+        e.stopPropagation();
+        this.editor.selectLayer(layer.id);
+      });
+      track.appendChild(clip);
+    }
+
+    this._updateClipPosition(clip, layer);
     this.redraw();
   }
 
-  _updateClipThumbnails(clipEl, layer) {
+  _updateClipPosition(clipEl, layer) {
+    const left = layer.startTime * this.pps;
+    const width = Math.max(20, layer.duration * this.pps);
+    clipEl.style.left = `${left}px`;
+    clipEl.style.width = `${width}px`;
+
+    const label = clipEl.querySelector('.clip-label');
+    if (label) label.textContent = layer.name;
+
     const strip = clipEl.querySelector('.clip-thumb-strip');
-    if (!layer.asset?.thumbnail) return;
-    
-    strip.innerHTML = '';
-    const dur = layer.duration;
-    const width = dur * this.pps;
-    const count = Math.ceil(width / 40);
-    
-    for (let i = 0; i < count; i++) {
-      const img = document.createElement('img');
-      img.src = layer.asset.thumbnail;
-      strip.appendChild(img);
+    if (strip && layer.asset?.thumbnail) {
+      strip.innerHTML = '';
+      const count = Math.ceil(width / 44);
+      for (let i = 0; i < count; i++) {
+        const img = document.createElement('img');
+        img.src = layer.asset.thumbnail;
+        strip.appendChild(img);
+      }
     }
   }
 
   redraw() {
     this.editor.compositor.layers.forEach(layer => {
       const clip = this._tracksArea.querySelector(`[data-layer-id="${layer.id}"]`);
-      if (!clip) return;
-      clip.style.left = `${layer.startTime * this.pps}px`;
-      clip.style.width = `${layer.duration * this.pps}px`;
-      this._updateClipThumbnails(clip, layer);
+      if (clip) {
+        this._updateClipPosition(clip, layer);
+      } else {
+        this.placeClip(layer);
+      }
     });
+
     this._updateRuler();
+    this.setPlayheadPosition(this.editor.timeline.currentTime);
   }
 
   _updateRuler() {
+    if (!this._ruler) return;
     this._ruler.innerHTML = '';
-    const width = this._tracksArea.scrollWidth;
-    for (let i = 0; i < width; i += this.pps) {
+    const totalSec = Math.max(30, this.editor.timeline.totalDuration + 10);
+    const stepSec = this.pps >= 80 ? 1 : (this.pps >= 40 ? 2 : 5);
+
+    for (let s = 0; s <= totalSec; s += stepSec) {
       const tick = document.createElement('div');
       tick.style.position = 'absolute';
-      tick.style.left = `${i}px`;
-      tick.style.fontSize = '0.6rem';
-      tick.style.color = '#555';
-      tick.style.borderLeft = '1px solid #333';
-      tick.style.height = '10px';
-      tick.textContent = `${Math.round(i / this.pps)}s`;
+      tick.style.left = `${s * this.pps}px`;
+      tick.style.bottom = '0';
+      tick.style.height = '14px';
+      tick.style.borderLeft = '1px solid rgba(245, 176, 65, 0.2)';
+      tick.style.fontSize = '0.62rem';
+      tick.style.fontFamily = 'JetBrains Mono, monospace';
+      tick.style.color = '#8e9bb0';
+      tick.style.paddingLeft = '4px';
+      tick.textContent = `${s}s`;
       this._ruler.appendChild(tick);
     }
   }

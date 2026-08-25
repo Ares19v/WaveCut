@@ -1,34 +1,73 @@
-import { notify } from '../ui/Notifications.js';
+﻿import { notify } from '../ui/Notifications.js';
 
 export class ExportEngine {
   constructor(compositor) {
     this.compositor = compositor;
     this._selectedFormat = 'png';
     this._quality = 0.95;
-    this._mode = 'image'; // 'image' | 'video'
+    this._mode = 'video';
+    this._filename = 'interstellar-master';
   }
 
-  setMode(mode) { this._mode = mode; }
-  setFormat(fmt) { this._selectedFormat = fmt; }
-  setQuality(q) { this._quality = Math.max(0.1, Math.min(1, q)); }
-  setFilename(name) { this._filename = name || 'wavecut-export'; }
+  setMode(mode) {
+    this._mode = mode;
+  }
+
+  setFormat(fmt) {
+    this._selectedFormat = fmt.toLowerCase();
+  }
+
+  setQuality(q) {
+    this._quality = Math.max(0.2, Math.min(1, q));
+  }
+
+  setFilename(name) {
+    this._filename = (name || 'wavecut-render').trim();
+  }
 
   async export(onProgress) {
-    if (this._mode === 'image') return this._exportImage(onProgress);
+    if (this._mode === 'image' || this._selectedFormat === 'png' || this._selectedFormat === 'jpg' || this._selectedFormat === 'webp') {
+      return this._exportImage(onProgress);
+    }
     return this._exportVideo(onProgress);
   }
 
-  async _exportImage(onProgress) {
-    if (onProgress) onProgress(0.3, 'Rendering canvas...');
-    const fmt = this._selectedFormat;
-    const mimeMap = { png: 'image/png', jpg: 'image/jpeg', jpeg: 'image/jpeg', webp: 'image/webp' };
-    const mime = mimeMap[fmt] || 'image/png';
-    const ext = fmt === 'jpg' ? 'jpeg' : fmt;
-    const filename = this._filename || 'wavecut-export';
+  async takeSnapshot() {
+    try {
+      const blob = await this.compositor.toBlob('image/png', 1.0);
+      if (!blob) throw new Error('Canvas render failed');
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `wavecut-snapshot-${Date.now()}.png`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 5000);
+      notify('Snapshot saved to Downloads!', 'success');
+    } catch (err) {
+      notify(`Snapshot error: ${err.message}`, 'error');
+    }
+  }
 
-    if (onProgress) onProgress(0.7, 'Encoding image...');
+  async _exportImage(onProgress) {
+    if (onProgress) onProgress(0.2, 'Rasterizing canvas...');
+    const fmt = this._selectedFormat;
+    const mimeMap = {
+      png: 'image/png',
+      jpg: 'image/jpeg',
+      jpeg: 'image/jpeg',
+      webp: 'image/webp'
+    };
+    const mime = mimeMap[fmt] || 'image/png';
+    const ext = fmt === 'jpeg' ? 'jpg' : fmt;
+    const filename = this._filename || 'wavecut-master';
+
+    if (onProgress) onProgress(0.6, 'Encoding color matrices...');
     const blob = await this.compositor.toBlob(mime, this._quality);
-    if (onProgress) onProgress(1.0, 'Done!');
+    if (!blob) throw new Error('Failed to generate image buffer');
+
+    if (onProgress) onProgress(1.0, 'Download starting...');
 
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -38,20 +77,31 @@ export class ExportEngine {
     a.click();
     document.body.removeChild(a);
     setTimeout(() => URL.revokeObjectURL(url), 5000);
-    notify('Export complete!', 'success');
+    notify(`Exported ${filename}.${ext} successfully!`, 'success');
   }
 
   async _exportVideo(onProgress) {
     const canvas = this.compositor.canvas;
-    const mimeType = MediaRecorder.isTypeSupported('video/webm;codecs=vp9')
-      ? 'video/webm;codecs=vp9'
-      : 'video/webm';
+    
+    let mimeType = 'video/webm';
+    if (MediaRecorder.isTypeSupported('video/webm;codecs=vp9')) {
+      mimeType = 'video/webm;codecs=vp9';
+    } else if (MediaRecorder.isTypeSupported('video/webm;codecs=vp8')) {
+      mimeType = 'video/webm;codecs=vp8';
+    }
 
     const stream = canvas.captureStream(30);
-    const recorder = new MediaRecorder(stream, { mimeType, videoBitsPerSecond: 8_000_000 });
-    const chunks = [];
+    let recorder;
+    try {
+      recorder = new MediaRecorder(stream, { mimeType, videoBitsPerSecond: 10_000_000 });
+    } catch (e) {
+      recorder = new MediaRecorder(stream);
+    }
 
-    recorder.ondataavailable = e => { if (e.data.size > 0) chunks.push(e.data); };
+    const chunks = [];
+    recorder.ondataavailable = e => {
+      if (e.data && e.data.size > 0) chunks.push(e.data);
+    };
 
     return new Promise((resolve, reject) => {
       recorder.onstop = () => {
@@ -59,41 +109,56 @@ export class ExportEngine {
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `${this._filename || 'wavecut-export'}.webm`;
+        const filename = this._filename || 'wavecut-video';
+        a.download = `${filename}.webm`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
         setTimeout(() => URL.revokeObjectURL(url), 5000);
-        if (onProgress) onProgress(1.0, 'Done!');
-        notify('Video export complete!', 'success');
+        if (onProgress) onProgress(1.0, 'Render Complete!');
+        notify(`Video rendered and downloaded (${filename}.webm)`, 'success');
         resolve();
       };
-      recorder.onerror = reject;
 
-      // Record for the duration of all video layers or at least 3s
+      recorder.onerror = err => {
+        reject(err);
+      };
+
+      // Calculate total rendering duration
       const layers = this.compositor.layers;
-      const videoDur = layers.reduce((max, l) => {
-        return l.asset && l.asset.assetType === 'video' ? Math.max(max, l.asset.duration) : max;
-      }, 0);
-      const dur = Math.max(videoDur, 3) * 1000;
+      const maxEnd = layers.reduce((max, l) => Math.max(max, (l.startTime || 0) + (l.duration || 5)), 0);
+      const totalSec = Math.max(maxEnd, 3);
+      const totalMs = totalSec * 1000;
 
       recorder.start(100);
-      if (onProgress) onProgress(0.1, 'Recording...');
+      if (onProgress) onProgress(0.05, 'Encoding frames...');
 
-      // Play video assets
-      layers.forEach(l => { if (l.asset?.assetType === 'video') { l.asset.data.currentTime = 0; l.asset.data.play(); }});
+      // Reset playback state for video assets
+      layers.forEach(l => {
+        if (l.asset?.assetType === 'video' && l.asset.data) {
+          l.asset.data.currentTime = 0;
+          l.asset.data.play().catch(() => {});
+        }
+      });
 
       let elapsed = 0;
       const interval = setInterval(() => {
         elapsed += 200;
-        if (onProgress) onProgress(Math.min(0.9, elapsed / dur), 'Encoding...');
+        const pct = Math.min(0.95, elapsed / totalMs);
+        if (onProgress) onProgress(pct, `Encoding 4D stream (${Math.round(pct * 100)}%)...`);
       }, 200);
 
       setTimeout(() => {
         clearInterval(interval);
-        layers.forEach(l => { if (l.asset?.assetType === 'video') l.asset.data.pause(); });
-        recorder.stop();
-      }, dur);
+        layers.forEach(l => {
+          if (l.asset?.assetType === 'video' && l.asset.data) {
+            l.asset.data.pause();
+          }
+        });
+        if (recorder.state === 'recording') {
+          recorder.stop();
+        }
+      }, totalMs);
     });
   }
 }

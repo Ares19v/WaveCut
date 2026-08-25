@@ -3,297 +3,548 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WaveCut — Professional Media Editor</title>
-    <meta name="description" content="WaveCut — Professional browser-based image and video editor. Edit, enhance and export your media.">
+    <title>WaveCut — 4D Prismatic Media Suite</title>
+    <meta name="description" content="WaveCut — Cinematic browser-based media editor inspired by 4D prismatic space. Zero server uploads, instant client-side rendering.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/src/style.css">
-
 </head>
 <body>
 
+<!-- Ambient 4D Tesseract Interactive Warp Canvas -->
+<canvas id="tesseract-bg" class="tesseract-bg"></canvas>
+
 <!-- ══════════════════════════════════════════════════════════ -->
-<!--  MODE SELECTOR SCREEN                                      -->
+<!--  LANDING PORTAL                                            -->
 <!-- ══════════════════════════════════════════════════════════ -->
 <div id="mode-selector" class="mode-selector">
-    <div class="mode-grid-bg"></div>
+    <div class="prism-glow-orb orb-1"></div>
+    <div class="prism-glow-orb orb-2"></div>
+    
     <div class="mode-content">
-        <div class="mode-logo">
-            <span class="lw">Wave</span><span class="lc">Cut</span>
-            <span class="lpro">PRO</span>
-        </div>
-        <p class="mode-sub">Professional media editing — right in your browser</p>
+        <!-- Hero Title -->
+        <h1 class="hero-title">
+            <span class="prism-text">WAVE</span><span class="gold-text">CUT</span>
+        </h1>
+        
+        <p class="hero-subtitle">
+            Zero-latency, client-side media manipulation engine. Render images and slice time in the browser.
+        </p>
+
+        <!-- Mode Cards -->
         <div class="mode-cards">
-            <button class="mode-card" id="mode-image" data-mode="image">
-                <div class="mc-icon image-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <!-- Chrono Mode (Video Editor) -->
+            <button class="mode-card card-video" id="mode-video" data-mode="video">
+                <div class="mc-glow glow-gold"></div>
+                <div class="mc-header">
+                    <div class="mc-icon chrono-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+                        </svg>
+                    </div>
+                    <div class="mc-badges">
+                        <span class="mc-pill pill-gold">TIMELINE</span>
+                    </div>
                 </div>
                 <div class="mc-body">
-                    <div class="mc-title">Image Editor</div>
-                    <div class="mc-desc">Crop · Adjust · Filter · Export PNG / JPG / WebP</div>
+                    <div class="mc-title">Video Timeline Editor</div>
+                    <div class="mc-desc">Cut, split, layer tracks, add soundscapes & composite clips with frame-accurate precision.</div>
                 </div>
-                <div class="mc-arrow">→</div>
+                <div class="mc-footer">
+                    <span class="mc-action">Launch Chrono Mode</span>
+                    <span class="mc-arrow">→</span>
+                </div>
             </button>
-            <button class="mode-card" id="mode-video" data-mode="video">
-                <div class="mc-icon video-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+
+            <!-- Photon Mode (Image Studio) -->
+            <button class="mode-card card-image" id="mode-image" data-mode="image">
+                <div class="mc-glow glow-cyan"></div>
+                <div class="mc-header">
+                    <div class="mc-icon photon-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
+                        </svg>
+                    </div>
+                    <div class="mc-badges">
+                        <span class="mc-pill pill-cyan">STUDIO</span>
+                    </div>
                 </div>
                 <div class="mc-body">
-                    <div class="mc-title">Video Editor</div>
-                    <div class="mc-desc">Cut · Trim · Layer · Add Effects · Export</div>
+                    <div class="mc-title">Image & Graphic Studio</div>
+                    <div class="mc-desc">Non-destructive crop, chromatic adjustments, text styling, and ultra-high resolution export.</div>
                 </div>
-                <div class="mc-arrow">→</div>
+                <div class="mc-footer">
+                    <span class="mc-action">Launch Photon Mode</span>
+                    <span class="mc-arrow">→</span>
+                </div>
             </button>
         </div>
     </div>
 </div>
 
 <!-- ══════════════════════════════════════════════════════════ -->
-<!--  EDITOR APP                                                -->
+<!--  PRO WORKSPACE APPLICATION                                 -->
 <!-- ══════════════════════════════════════════════════════════ -->
 <div id="editor-app" class="editor-app hidden">
 
-    <!-- ── TOP NAV ─────────────────────────────────────────── -->
+    <!-- ── TOP NAVIGATION HEADER ────────────────────────────── -->
     <header class="topbar">
         <div class="topbar-left">
-            <button id="btn-back-home" class="tb-btn" title="Back to Home">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            <button id="btn-back-home" class="tb-icon-btn" title="Back to Portal">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
             </button>
-            <div class="app-logo"><span class="lw">Wave</span><span class="lc">Cut</span></div>
-            <div class="mode-pill" id="mode-pill">Image</div>
-            <div class="sep"></div>
-            <!-- Inline editable project name -->
-            <input type="text" id="project-name" class="project-name-input" value="Untitled Project" spellcheck="false" maxlength="60" title="Click to rename project">
+            
+            <div class="brand">
+                <span class="brand-wave">WAVE</span><span class="brand-cut">CUT</span>
+            </div>
+            
+            <div class="mode-pill" id="mode-pill">VIDEO</div>
+            <div class="v-sep"></div>
+            
+            <div class="project-name-wrap">
+                <input type="text" id="project-name" class="project-name-input" value="Interstellar Voyage" spellcheck="false" title="Click to rename project">
+                <span class="edit-icon">✎</span>
+            </div>
         </div>
 
-        <div class="topbar-center">
-            <button id="btn-prev" class="tb-btn" title="Previous Frame (← key)">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/></svg>
-            </button>
-            <button id="btn-play" class="play-btn" title="Play / Pause (Space)">
-                <svg id="play-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-            </button>
-            <button id="btn-next" class="tb-btn" title="Next Frame (→ key)">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
-            </button>
-            <span class="timecode" id="time-display">00:00:00</span>
-            <span class="timecode-sep">/</span>
-            <span class="timecode dim" id="time-total">00:00:00</span>
+        <!-- Center Pro Transport Controls -->
+        <div class="topbar-center" id="playback-controls">
+            <div class="transport-bar">
+                <button id="btn-jump-start" class="transport-btn" title="Jump to Start">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/></svg>
+                </button>
+                <button id="btn-prev" class="transport-btn" title="Step Frame Back (←)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="19 20 9 12 19 4 19 20"/></svg>
+                </button>
+                
+                <button id="btn-play" class="play-btn" title="Play / Pause (Space)">
+                    <svg id="play-icon" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                </button>
+                
+                <button id="btn-next" class="transport-btn" title="Step Frame Forward (→)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 4 15 12 5 20 5 4"/></svg>
+                </button>
+                <button id="btn-jump-end" class="transport-btn" title="Jump to End">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
+                </button>
+            </div>
+
+            <!-- Precision Timecode HUD -->
+            <div class="timecode-display">
+                <span class="tc-current" id="time-display">00:00:00.00</span>
+                <span class="tc-sep">/</span>
+                <span class="tc-total" id="time-total">00:00:10.00</span>
+                <span class="tc-fps">24.0 FPS</span>
+            </div>
         </div>
 
+        <!-- Right Action Controls -->
         <div class="topbar-right">
-            <button id="btn-undo" class="tb-btn" title="Undo (Ctrl+Z)">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></svg>
+            <!-- Aspect Ratio Selector -->
+            <div class="aspect-dropdown-wrap">
+                <select id="aspect-ratio-select" class="aspect-select" title="Canvas Format">
+                    <option value="16:9">16:9 Widescreen (1920×1080)</option>
+                    <option value="9:16">9:16 Vertical Reel (1080×1920)</option>
+                    <option value="1:1">1:1 Square (1080×1080)</option>
+                    <option value="4:5">4:5 Portrait (1080×1350)</option>
+                    <option value="21:9">21:9 Cinema Scope (2560×1080)</option>
+                </select>
+            </div>
+
+            <div class="v-sep"></div>
+
+            <button id="btn-undo" class="tb-icon-btn" title="Undo (Ctrl+Z)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></svg>
             </button>
-            <button id="btn-redo" class="tb-btn" title="Redo (Ctrl+Y)">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 7v6h-6"/><path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3L21 13"/></svg>
+            <button id="btn-redo" class="tb-icon-btn" title="Redo (Ctrl+Y)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 7v6h-6"/><path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3L21 13"/></svg>
             </button>
-            <button id="btn-export" class="export-btn" title="Export project">
-                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                Export
+            
+            <button id="btn-snapshot" class="tb-btn secondary-btn" title="Instant Full-Res Snapshot">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                Snap Frame
+            </button>
+
+            <button id="btn-export" class="tb-btn export-btn" title="Render Master Export">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Export Master
             </button>
         </div>
     </header>
 
-    <!-- ── WORKSPACE ────────────────────────────────────────── -->
+    <!-- ── WORKSPACE CORE GRID ──────────────────────────────── -->
     <div class="workspace" id="workspace">
 
-        <!-- LEFT PANEL: Media Pool only (CapCut style) -->
+        <!-- LEFT PANEL: Multi-Module Library -->
         <aside class="left-panel">
-
-            <!-- Tab switcher -->
             <div class="lp-tabs">
-                <button class="lp-tab active" data-lptab="media" id="lptab-media">Media</button>
-                <button class="lp-tab" data-lptab="clips" id="lptab-clips">Clips</button>
-                <button class="lp-tab" data-lptab="text" id="lptab-text">Text</button>
+                <button class="lp-tab active" data-lptab="media" id="lptab-media" title="Media Library">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/><circle cx="9" cy="9" r="2"/></svg>
+                    Media
+                </button>
+                <button class="lp-tab" data-lptab="audio" id="lptab-audio" title="Synthesized Soundscapes">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+                    Audio
+                </button>
+                <button class="lp-tab" data-lptab="text" id="lptab-text" title="Holographic Typography">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
+                    Text
+                </button>
+                <button class="lp-tab" data-lptab="presets" id="lptab-presets" title="Prism FX Optics">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+                    Prism FX
+                </button>
+                <button class="lp-tab" data-lptab="clips" id="lptab-clips" title="Active Hierarchy">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+                    Layers
+                </button>
             </div>
 
-            <!-- Media tab -->
+            <!-- MEDIA TAB -->
             <div class="lp-pane active" id="lpane-media">
-                <div class="lp-actions">
-                    <button id="btn-import" class="import-btn">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                        Import Media
+                <div class="dropzone-box" id="media-dropzone">
+                    <input type="file" id="media-input" multiple accept="image/*,video/*,audio/*" hidden>
+                    <button id="btn-import" class="import-action-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                        Import Media Assets
                     </button>
-                    <input type="file" id="media-input" multiple accept="image/*,video/*" hidden>
+                    <span class="drop-hint">Drop video, image, or audio files</span>
                 </div>
+
+                <div class="sample-box">
+                    <div class="sample-header">
+                        <span class="sample-label">COSMIC DEMO ASSETS</span>
+                        <span class="sample-sub">1-Click Load</span>
+                    </div>
+                    <div class="sample-btn-group">
+                        <button id="btn-sample-cosmic" class="mini-sample-btn">✨ Singularity Nebula</button>
+                        <button id="btn-sample-tesseract" class="mini-sample-btn">🔲 4D Prism Matrix</button>
+                    </div>
+                </div>
+
                 <div id="asset-grid" class="asset-grid">
                     <div class="pool-empty" id="pool-empty">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                        <p>No media yet</p>
-                        <span>Click Import to add photos & videos</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                        <p>No Media Assets Imported</p>
+                        <span>Click Import or drag photos & videos here</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Clips tab (active clips on timeline) -->
+            <!-- AUDIO SOUNDSCAPES TAB -->
+            <div class="lp-pane" id="lpane-audio">
+                <div class="text-presets-header">
+                    <p class="section-title">Synthesized Soundscapes</p>
+                    <span class="section-sub">Procedural Web Audio Generators</span>
+                </div>
+                <div class="sound-presets-list">
+                    <div class="sound-card" data-sound="gargantua">
+                        <div class="sound-info">
+                            <div class="sound-name">Gargantua Deep Drone</div>
+                            <span class="sound-meta">Sub-bass atmospheric rumble (432Hz)</span>
+                        </div>
+                        <button class="sound-add-btn" data-sound="gargantua">+ Add Track</button>
+                    </div>
+                    <div class="sound-card" data-sound="sweep">
+                        <div class="sound-info">
+                            <div class="sound-name">Singularity Chrono Sweep</div>
+                            <span class="sound-meta">Prismatic resonant riser & sweep</span>
+                        </div>
+                        <button class="sound-add-btn" data-sound="sweep">+ Add Track</button>
+                    </div>
+                    <div class="sound-card" data-sound="pulsar">
+                        <div class="sound-info">
+                            <div class="sound-name">Quantum Pulsar Rhythms</div>
+                            <span class="sound-meta">Rhythmic high-frequency cosmic pulse</span>
+                        </div>
+                        <button class="sound-add-btn" data-sound="pulsar">+ Add Track</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEXT TAB -->
+            <div class="lp-pane" id="lpane-text">
+                <div class="text-presets-header">
+                    <p class="section-title">Holographic Typography</p>
+                    <span class="section-sub">Click style to place on canvas</span>
+                </div>
+                <div class="text-presets-grid">
+                    <button class="text-card-btn" data-preset="title">
+                        <div class="t-preview t-title">4D TESSERACT</div>
+                        <span>Epic Cinema Master</span>
+                    </button>
+                    <button class="text-card-btn" data-preset="hologram">
+                        <div class="t-preview t-holo">EVENT HORIZON</div>
+                        <span>Cyan Quantum Glow</span>
+                    </button>
+                    <button class="text-card-btn" data-preset="timecode">
+                        <div class="t-preview t-time">T+ 00:42:19.4</div>
+                        <span>Mission Chrono Stamp</span>
+                    </button>
+                    <button class="text-card-btn" data-preset="minimal">
+                        <div class="t-preview t-min">Gargantua Singularity</div>
+                        <span>Clean Minimal Sub</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- PRISM FX TAB -->
+            <div class="lp-pane" id="lpane-presets">
+                <div class="text-presets-header">
+                    <p class="section-title">Prismatic Color Grading</p>
+                    <span class="section-sub">1-Click Optics & Refraction</span>
+                </div>
+                <div class="filter-presets-grid">
+                    <button class="preset-btn" data-fx="tesseract">
+                        <div class="fx-dot fx-gold"></div>
+                        <div class="fx-text">
+                            <span class="fx-name">Tesseract Singularity</span>
+                            <span class="fx-sub">Warm golden refraction & rich contrast</span>
+                        </div>
+                    </button>
+                    <button class="preset-btn" data-fx="cyber">
+                        <div class="fx-dot fx-cyan"></div>
+                        <div class="fx-text">
+                            <span class="fx-name">Deep Quantum Cyan</span>
+                            <span class="fx-sub">Bioluminescent sci-fi cool tint</span>
+                        </div>
+                    </button>
+                    <button class="preset-btn" data-fx="prism">
+                        <div class="fx-dot fx-rainbow"></div>
+                        <div class="fx-text">
+                            <span class="fx-name">Prism Spectrum</span>
+                            <span class="fx-sub">Chromatic aberration dispersion</span>
+                        </div>
+                    </button>
+                    <button class="preset-btn" data-fx="noir">
+                        <div class="fx-dot fx-noir"></div>
+                        <div class="fx-text">
+                            <span class="fx-name">Event Horizon Noir</span>
+                            <span class="fx-sub">High-contrast monochrome depth</span>
+                        </div>
+                    </button>
+                    <button class="preset-btn" data-fx="singularity">
+                        <div class="fx-dot fx-amber"></div>
+                        <div class="fx-text">
+                            <span class="fx-name">Gargantua Warmth</span>
+                            <span class="fx-sub">Warm solar accretion disk haze</span>
+                        </div>
+                    </button>
+                    <button class="preset-btn" data-fx="reset">
+                        <div class="fx-dot fx-clean"></div>
+                        <div class="fx-text">
+                            <span class="fx-name">Clean Neutral</span>
+                            <span class="fx-sub">Linear unadjusted natural color</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- LAYERS TAB -->
             <div class="lp-pane" id="lpane-clips">
+                <div class="text-presets-header">
+                    <p class="section-title">Track Hierarchy</p>
+                    <span class="section-sub">Active composite layer stack</span>
+                </div>
                 <div id="clips-list" class="clips-list">
                     <div class="pool-empty" id="clips-empty">
-                        <p>No clips yet</p>
-                        <span>Add media from the Media tab</span>
+                        <p>No Active Layers</p>
+                        <span>Add media, audio, or text</span>
                     </div>
-                </div>
-            </div>
-
-            <!-- Text tab -->
-            <div class="lp-pane" id="lpane-text">
-                <div class="text-presets">
-                    <p class="text-presets-title">Add a text layer</p>
-                    <button class="text-preset-btn" data-preset="title">Big Title</button>
-                    <button class="text-preset-btn" data-preset="subtitle">Subtitle</button>
-                    <button class="text-preset-btn" data-preset="caption">Caption</button>
-                    <button class="text-preset-btn" data-preset="label">Label</button>
                 </div>
             </div>
         </aside>
 
-        <!-- CENTER: Preview monitor -->
+        <!-- CENTER: Preview Monitor & Canvas -->
         <div class="monitor">
             <div class="monitor-toolbar">
                 <div class="tool-group">
-                    <button class="tool-btn active" data-tool="select" title="Select & Move (V)">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 3 7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/><path d="m13 13 6 6"/></svg>
+                    <button class="tool-btn active" data-tool="select" title="Transform & Move (V)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 3 7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/><path d="m13 13 6 6"/></svg>
+                        <span>Transform (V)</span>
                     </button>
-                    <button class="tool-btn" data-tool="crop" title="Crop (C)">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2v14a2 2 0 0 0 2 2h14"/><path d="M18 22V8a2 2 0 0 0-2-2H2"/></svg>
-                    </button>
-                    <button class="tool-btn" data-tool="text" title="Add Text (T)">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
+                    <button class="tool-btn" data-tool="crop" title="Crop Tool (C)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2v14a2 2 0 0 0 2 2h14"/><path d="M18 22V8a2 2 0 0 0-2-2H2"/></svg>
+                        <span>Crop (C)</span>
                     </button>
                 </div>
+
+                <div class="monitor-hud">
+                    <span class="hud-item" id="monitor-res-badge">1920 × 1080</span>
+                    <span class="hud-dot">•</span>
+                    <span class="hud-item">RGB 8-BIT</span>
+                </div>
+
                 <div class="zoom-row">
-                    <button id="zoom-out" class="tb-btn">−</button>
-                    <span id="zoom-level">48%</span>
-                    <button id="zoom-in" class="tb-btn">+</button>
-                    <button id="zoom-fit" class="tb-btn fit-btn">FIT</button>
+                    <button id="zoom-out" class="mini-tool-btn" title="Zoom Out">−</button>
+                    <span id="zoom-level" class="zoom-text">100%</span>
+                    <button id="zoom-in" class="mini-tool-btn" title="Zoom In">+</button>
+                    <button id="zoom-fit" class="mini-tool-btn fit-btn">FIT</button>
                 </div>
             </div>
 
+            <!-- Canvas Viewport -->
             <div class="canvas-area" id="canvas-area">
                 <div id="canvas-wrap" class="canvas-wrap">
                     <canvas id="main-canvas"></canvas>
-                    <div id="crop-overlay" class="hidden"></div>
-                    <!-- Selection handles rendered here by SelectTool -->
-                    <div id="selection-box" class="selection-box hidden"></div>
+                    <div id="crop-overlay" class="crop-overlay hidden"></div>
+                    
+                    <!-- Transform & Selection Handles -->
+                    <div id="selection-box" class="selection-box hidden">
+                        <div class="sel-handle handle-tl" data-handle="tl"></div>
+                        <div class="sel-handle handle-tr" data-handle="tr"></div>
+                        <div class="sel-handle handle-bl" data-handle="bl"></div>
+                        <div class="sel-handle handle-br" data-handle="br"></div>
+                    </div>
                 </div>
+
                 <div class="canvas-empty" id="canvas-empty">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                    <p>Import media and click it to add to the canvas</p>
+                    <div class="empty-prism-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"/><line x1="12" y1="22" x2="12" y2="15.5"/><polyline points="22 8.5 12 15.5 2 8.5"/></svg>
+                    </div>
+                    <h3>4D Tesseract Canvas Ready</h3>
+                    <p>Import your media from the left panel or click a sample to begin editing.</p>
                 </div>
             </div>
         </div>
 
-        <!-- RIGHT PANEL: Inspector -->
+        <!-- RIGHT PANEL: Inspector & Optics -->
         <aside class="inspector">
             <div class="insp-tabs">
                 <button class="insp-tab active" data-itab="transform">Transform</button>
-                <button class="insp-tab" data-itab="adjust">Adjust</button>
-                <button class="insp-tab" data-itab="text" id="itab-text">Text</button>
+                <button class="insp-tab" data-itab="adjust">Optics & Color</button>
+                <button class="insp-tab" data-itab="text" id="itab-text">Typography</button>
             </div>
+            
             <div class="insp-body">
-
-                <!-- Transform -->
+                <!-- Transform Tab -->
                 <div class="insp-pane active" id="ipane-transform">
-                    <div class="no-sel" id="transform-nosel">Select a clip to edit</div>
+                    <div class="no-sel" id="transform-nosel">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                        <span>Select a clip or layer to adjust transform</span>
+                    </div>
                     <div class="insp-fields hidden" id="transform-fields">
                         <div class="field-group">
-                            <div class="field-label">Position</div>
+                            <span class="field-label">Position & Coordinates</span>
                             <div class="field-row">
                                 <div class="numinput"><label>X</label><input type="number" id="prop-x" value="0" step="1"></div>
                                 <div class="numinput"><label>Y</label><input type="number" id="prop-y" value="0" step="1"></div>
                             </div>
                         </div>
+
                         <div class="field-group">
-                            <div class="field-label">Size</div>
+                            <span class="field-label">Scale & Dimensions</span>
                             <div class="field-row">
-                                <div class="numinput"><label>W</label><input type="number" id="prop-w" value="0" step="1"></div>
-                                <div class="numinput"><label>H</label><input type="number" id="prop-h" value="0" step="1"></div>
+                                <div class="numinput"><label>W</label><input type="number" id="prop-w" value="1920" step="1"></div>
+                                <div class="numinput"><label>H</label><input type="number" id="prop-h" value="1080" step="1"></div>
                             </div>
-                            <label class="lock-ratio">
-                                <input type="checkbox" id="lock-ratio" checked>
-                                <span>Lock aspect ratio</span>
-                            </label>
+                            <div class="quick-scale-row">
+                                <button id="btn-scale-fit" class="mini-btn">Fit Canvas</button>
+                                <button id="btn-scale-fill" class="mini-btn">Fill Canvas</button>
+                                <button id="btn-scale-reset" class="mini-btn">Reset</button>
+                            </div>
                         </div>
+
                         <div class="field-group">
-                            <div class="field-label">Rotation</div>
+                            <span class="field-label">Rotation Angle</span>
                             <div class="slider-wrap">
                                 <input type="range" id="prop-rotate" min="-180" max="180" value="0">
                                 <span class="sval" id="rotate-val">0°</span>
                             </div>
                         </div>
+
                         <div class="field-group">
-                            <div class="field-label">Opacity</div>
+                            <span class="field-label">Opacity & Alpha</span>
                             <div class="slider-wrap">
                                 <input type="range" id="prop-opacity" min="0" max="100" value="100">
                                 <span class="sval" id="opacity-val">100%</span>
                             </div>
                         </div>
+
                         <div class="flip-row">
-                            <button class="flip-btn" id="btn-flip-h">↔ Flip H</button>
-                            <button class="flip-btn" id="btn-flip-v">↕ Flip V</button>
+                            <button class="sub-action-btn" id="btn-flip-h">↔ Flip Horizontal</button>
+                            <button class="sub-action-btn" id="btn-flip-v">↕ Flip Vertical</button>
                         </div>
-                        <button class="danger-btn" id="btn-delete-layer">🗑 Remove from Canvas</button>
+
+                        <button class="danger-btn" id="btn-delete-layer">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/></svg>
+                            Delete Layer
+                        </button>
                     </div>
                 </div>
 
-                <!-- Adjust -->
+                <!-- Optics & Adjustments Tab -->
                 <div class="insp-pane" id="ipane-adjust">
-                    <div class="no-sel" id="adjust-nosel">Select a clip to adjust</div>
+                    <div class="no-sel" id="adjust-nosel">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                        <span>Select a layer to adjust color & optics</span>
+                    </div>
                     <div class="insp-fields hidden" id="adjust-fields">
-                        <div class="field-group"><div class="field-label">Brightness</div><div class="slider-wrap"><input type="range" id="f-brightness" min="0" max="200" value="100"><span class="sval" id="brightness-val">100</span></div></div>
-                        <div class="field-group"><div class="field-label">Contrast</div><div class="slider-wrap"><input type="range" id="f-contrast" min="0" max="200" value="100"><span class="sval" id="contrast-val">100</span></div></div>
-                        <div class="field-group"><div class="field-label">Saturation</div><div class="slider-wrap"><input type="range" id="f-saturation" min="0" max="200" value="100"><span class="sval" id="saturation-val">100</span></div></div>
-                        <div class="field-group"><div class="field-label">Hue</div><div class="slider-wrap"><input type="range" id="f-hue" min="0" max="360" value="0"><span class="sval" id="hue-val">0°</span></div></div>
-                        <div class="field-group"><div class="field-label">Blur</div><div class="slider-wrap"><input type="range" id="f-blur" min="0" max="20" value="0" step="0.5"><span class="sval" id="blur-val">0</span></div></div>
-                        <div class="field-group"><div class="field-label">Vignette</div><div class="slider-wrap"><input type="range" id="f-vignette" min="0" max="100" value="0"><span class="sval" id="vignette-val">0</span></div></div>
-                        <button class="reset-btn" id="btn-reset-filters">Reset Adjustments</button>
+                        <div class="field-group">
+                            <span class="field-label">Brightness</span>
+                            <div class="slider-wrap"><input type="range" id="f-brightness" min="0" max="200" value="100"><span class="sval" id="brightness-val">100</span></div>
+                        </div>
+                        <div class="field-group">
+                            <span class="field-label">Contrast</span>
+                            <div class="slider-wrap"><input type="range" id="f-contrast" min="0" max="200" value="100"><span class="sval" id="contrast-val">100</span></div>
+                        </div>
+                        <div class="field-group">
+                            <span class="field-label">Saturation</span>
+                            <div class="slider-wrap"><input type="range" id="f-saturation" min="0" max="200" value="100"><span class="sval" id="saturation-val">100</span></div>
+                        </div>
+                        <div class="field-group">
+                            <span class="field-label">Prismatic Hue Shift</span>
+                            <div class="slider-wrap"><input type="range" id="f-hue" min="0" max="360" value="0"><span class="sval" id="hue-val">0°</span></div>
+                        </div>
+                        <div class="field-group">
+                            <span class="field-label">Gaussian Blur</span>
+                            <div class="slider-wrap"><input type="range" id="f-blur" min="0" max="20" value="0" step="0.5"><span class="sval" id="blur-val">0</span></div>
+                        </div>
+                        <div class="field-group">
+                            <span class="field-label">Sepia Warmth</span>
+                            <div class="slider-wrap"><input type="range" id="f-sepia" min="0" max="100" value="0"><span class="sval" id="sepia-val">0%</span></div>
+                        </div>
+                        <button class="reset-btn" id="btn-reset-filters">Reset Color Adjustments</button>
                     </div>
                 </div>
 
-                <!-- Text -->
+                <!-- Text Tab -->
                 <div class="insp-pane" id="ipane-text">
-                    <div class="no-sel" id="text-nosel">Add or select a text layer</div>
+                    <div class="no-sel" id="text-nosel">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                        <span>Select a text layer to customize</span>
+                    </div>
                     <div class="insp-fields hidden" id="text-fields">
                         <div class="field-group">
-                            <div class="field-label">Content</div>
-                            <textarea id="text-content" rows="3" placeholder="Enter your text..."></textarea>
+                            <span class="field-label">Content</span>
+                            <textarea id="text-content" rows="3" placeholder="Enter headline or caption..."></textarea>
                         </div>
                         <div class="field-group">
-                            <div class="field-label">Font Size</div>
-                            <div class="slider-wrap"><input type="range" id="text-size" min="8" max="300" value="72"><span class="sval" id="text-size-val">72px</span></div>
-                        </div>
-                        <div class="field-group">
-                            <div class="field-label">Font</div>
+                            <span class="field-label">Typography</span>
                             <select id="text-font" class="sel-field">
-                                <option value="Inter">Inter</option>
-                                <option value="Arial Black">Arial Black</option>
-                                <option value="Georgia">Georgia</option>
-                                <option value="Impact">Impact</option>
-                                <option value="Courier New">Courier New</option>
-                                <option value="Verdana">Verdana</option>
-                                <option value="Trebuchet MS">Trebuchet MS</option>
+                                <option value="Space Grotesk">Space Grotesk (Futuristic)</option>
+                                <option value="JetBrains Mono">JetBrains Mono (Timecode)</option>
+                                <option value="Outfit">Outfit (Clean Sans)</option>
+                                <option value="Inter">Inter (Standard)</option>
+                                <option value="Georgia">Georgia (Classic Serif)</option>
+                                <option value="Impact">Impact (Heavy Title)</option>
                             </select>
                         </div>
                         <div class="field-group">
-                            <div class="field-label">Color</div>
+                            <span class="field-label">Font Size</span>
+                            <div class="slider-wrap"><input type="range" id="text-size" min="12" max="240" value="72"><span class="sval" id="text-size-val">72px</span></div>
+                        </div>
+                        <div class="field-group">
+                            <span class="field-label">Color & Glow</span>
                             <div class="color-row">
                                 <input type="color" id="text-color" value="#ffffff" class="color-pick">
                                 <div class="style-btns">
-                                    <button class="style-btn" id="text-bold"><b>B</b></button>
-                                    <button class="style-btn" id="text-italic"><i>I</i></button>
-                                    <button class="style-btn" id="text-shadow">Sh</button>
-                                    <button class="style-btn" id="text-outline">Out</button>
+                                    <button class="style-btn" id="text-bold" title="Bold"><b>B</b></button>
+                                    <button class="style-btn" id="text-italic" title="Italic"><i>I</i></button>
+                                    <button class="style-btn" id="text-glow" title="Prism Glow">✨</button>
+                                    <button class="style-btn" id="text-shadow" title="Shadow">S</button>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="field-group">
-                            <div class="field-label">Alignment</div>
-                            <div class="align-btns">
-                                <button class="style-btn active" data-align="left">⬛▭▭</button>
-                                <button class="style-btn" data-align="center">▭⬛▭</button>
-                                <button class="style-btn" data-align="right">▭▭⬛</button>
                             </div>
                         </div>
                     </div>
@@ -301,34 +552,35 @@
             </div>
         </aside>
 
-        <!-- TIMELINE (bottom) -->
+        <!-- BOTTOM: Multi-Track Precision Timeline -->
         <div class="timeline" id="timeline">
-            <!-- Timeline toolbar -->
             <div class="tl-toolbar">
                 <div class="tl-tools">
-                    <button id="btn-split" class="tl-btn" title="Split clip at playhead (S)">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/></svg>
-                        Split
+                    <button id="btn-split" class="tl-action-btn" title="Split clip at playhead (S key)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/></svg>
+                        Split (S)
                     </button>
-                    <button id="btn-delete-clip" class="tl-btn danger" title="Delete selected clip (Del)">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+                    <button id="btn-delete-clip" class="tl-action-btn danger-hover" title="Delete selected clip (Del)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/></svg>
                         Delete
                     </button>
-                    <div class="tl-sep"></div>
-                    <button id="tl-zoom-out" class="tl-btn">− Zoom</button>
-                    <button id="tl-zoom-in" class="tl-btn">+ Zoom</button>
+                    <div class="tl-vsep"></div>
+                    <button id="tl-zoom-out" class="mini-tool-btn" title="Zoom Out Timeline">−</button>
+                    <button id="tl-zoom-in" class="mini-tool-btn" title="Zoom In Timeline">+</button>
                 </div>
                 <div class="tl-ruler" id="tl-ruler"></div>
             </div>
 
-            <!-- Track area -->
             <div class="tl-body" id="tl-body">
                 <div class="tl-labels" id="tl-labels">
-                    <!-- Track labels injected here -->
+                    <!-- Dynamic track labels injected -->
                 </div>
                 <div class="tl-tracks" id="tl-tracks">
-                    <div class="tl-playhead" id="tl-playhead"></div>
-                    <!-- Tracks injected here -->
+                    <!-- Glowing Time Filament Playhead -->
+                    <div class="tl-playhead" id="tl-playhead">
+                        <div class="playhead-diamond"></div>
+                        <div class="playhead-laser"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -337,51 +589,56 @@
 </div><!-- /editor-app -->
 
 <!-- ══════════════════════════════════════════════════════════ -->
-<!--  EXPORT MODAL                                              -->
+<!--  PRO EXPORT MASTER MODAL                                   -->
 <!-- ══════════════════════════════════════════════════════════ -->
 <div id="export-modal" class="modal-overlay hidden">
-    <div class="modal">
+    <div class="modal prism-modal">
         <div class="modal-hd">
-            <h2>Export</h2>
-            <button id="export-modal-close" class="tb-btn">✕</button>
+            <div class="modal-title-wrap">
+                <div class="modal-badge">CLIENT-SIDE MASTER ENCODER</div>
+                <h2>Export Master File</h2>
+            </div>
+            <button id="export-modal-close" class="tb-icon-btn">✕</button>
         </div>
         <div class="modal-bd">
             <div class="export-section">
-                <div class="export-label">Format</div>
+                <label class="export-label">Target Container Format</label>
                 <div class="format-btns" id="format-btns"></div>
             </div>
             <div class="export-section">
-                <div class="export-label">Quality <span class="sval" id="export-quality-val">95%</span></div>
-                <input type="range" id="export-quality" min="10" max="100" value="95">
+                <div class="export-label-row">
+                    <label class="export-label">Bitrate / Encoding Quality</label>
+                    <span class="sval" id="export-quality-val">95%</span>
+                </div>
+                <input type="range" id="export-quality" min="20" max="100" value="95">
             </div>
             <div class="export-section">
-                <div class="export-label">Resolution</div>
+                <label class="export-label">Resolution Master</label>
                 <div class="res-btns">
-                    <button class="res-btn active" data-res="original">Original</button>
-                    <button class="res-btn" data-res="3840x2160">4K</button>
-                    <button class="res-btn" data-res="1920x1080">1080p</button>
-                    <button class="res-btn" data-res="1280x720">720p</button>
+                    <button class="res-btn active" data-res="original">Source Native (100%)</button>
+                    <button class="res-btn" data-res="1920x1080">1080p FHD</button>
+                    <button class="res-btn" data-res="1280x720">720p HD</button>
                 </div>
             </div>
-            <div class="export-section" id="export-filename-row">
-                <div class="export-label">File Name</div>
-                <input type="text" id="export-filename" class="filename-input" placeholder="wavecut-export" value="wavecut-export">
+            <div class="export-section">
+                <label class="export-label">Export File Name</label>
+                <input type="text" id="export-filename" class="filename-input" placeholder="wavecut-master" value="interstellar-master">
             </div>
         </div>
         <div class="modal-ft">
             <div id="export-prog" class="export-prog hidden">
                 <div class="prog-bar"><div class="prog-fill" id="prog-fill"></div></div>
-                <span id="prog-label">Exporting...</span>
+                <span id="prog-label">Encoding media frames...</span>
             </div>
-            <button id="btn-do-export" class="export-btn">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                Export Now
+            <button id="btn-do-export" class="primary-glow-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                <span>Render & Download Master</span>
             </button>
         </div>
     </div>
 </div>
 
-<!-- Toast container -->
+<!-- Toast Notifications Container -->
 <div id="toast-container" class="toast-container"></div>
 
 <script type="module" src="/src/main.js"></script>
