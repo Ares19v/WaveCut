@@ -13,5 +13,6 @@
   },
   "dependencies": {
     "cropperjs": "^1.5.13"
-  }
+  },
+  "description": "Browser-based client-side media editor for video trimming, canvas compositing, and Web Audio synthesis."
 }
