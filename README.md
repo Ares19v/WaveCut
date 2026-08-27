@@ -3,6 +3,9 @@
 # ?? WaveCut
 ### 4D Prismatic Browser-Based Media Suite ? Zero Installs, Instant Client-Side Rendering
 
+[![CI](https://github.com/Ares19v/WaveCut/actions/workflows/ci.yml/badge.svg)](https://github.com/Ares19v/WaveCut/actions/workflows/ci.yml)
+
+
 [![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
 [![Web Audio API](https://img.shields.io/badge/Web_Audio_API-Enabled-FF8800?style=for-the-badge&logo=w3c&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API)
 [![Canvas API](https://img.shields.io/badge/HTML5_Canvas-4K_Rendering-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API)
