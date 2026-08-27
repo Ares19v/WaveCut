@@ -85,5 +85,3 @@ Access the application at `http://localhost:80` (or `http://localhost:5173` in d
 ---
 
 © 2025 Devansh Tyagi (Ares19v). All Rights Reserved.
-
-Unauthorized copying, modification, distribution, or use of this project or any of its components, in whole or in part, without explicit written permission from the author is strictly prohibited.
