@@ -10,7 +10,6 @@
 [![Web Audio API](https://img.shields.io/badge/Web_Audio_API-Enabled-FF8800?style=for-the-badge&logo=w3c&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API)
 [![Canvas API](https://img.shields.io/badge/HTML5_Canvas-4K_Rendering-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API)
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://docker.com)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](LICENSE)
 
 <p align="center">
   <b>A lightweight, hyper-fast, privacy-first in-browser creative workstation. Edit, crop, filter, composite layers, synthesize dynamic audio wave patterns, and export videos directly on the client with zero cloud server dependencies.</b>
@@ -85,6 +84,6 @@ Access the application at `http://localhost:80` (or `http://localhost:5173` in d
 
 ---
 
-## ?? License
+© 2025 Devansh Tyagi (Ares19v). All Rights Reserved.
 
-Distributed under the MIT License. See `LICENSE` for details.
+Unauthorized copying, modification, distribution, or use of this project or any of its components, in whole or in part, without explicit written permission from the author is strictly prohibited.
